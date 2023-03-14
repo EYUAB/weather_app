@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/getRequest.dart';
 import 'package:weather_app/location_screen.dart';
 import 'package:weather_app/location_tracer.dart';
 late double latitude;
 late double longitude;
+const apiKey='6554778d30a128b3bda993f87cac3c86';
 void main(List<String> args) {
   runApp(MaterialApp(home: LoadingScreen()));
 }
@@ -25,7 +27,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await locationTracer.getLocation();
     latitude= locationTracer.latitude;
     longitude=locationTracer.longitude;
-     Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(),),);
+    String uri='https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey';
+    GetRequest getRe=GetRequest(uri);
+   var weatherData=await getRe.getRequest();
+   var cityName= weatherData['name'];
+   print(cityName);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(),),);
   }
   @override
   Widget build(BuildContext context) {
