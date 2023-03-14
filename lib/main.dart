@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/location_screen.dart';
 import 'package:weather_app/location_tracer.dart';
 late double latitude;
 late double longitude;
 void main(List<String> args) {
-  runApp(LoadingScreen());
+  runApp(MaterialApp(home: LoadingScreen()));
 }
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -24,14 +25,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await locationTracer.getLocation();
     latitude= locationTracer.latitude;
     longitude=locationTracer.longitude;
-    print(latitude);
-    print(longitude);
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(),),);
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(
+    return  Scaffold(
 
-    ),
     );
   }
 }
