@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+  const LocationScreen({this.locationBody});
+  final locationBody;
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  Icon icecream=Icon(Icons.icecream,color: Colors.white,);
+  late int temprature;
+  late String cityName;
+  late int condition; 
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateUi(widget.locationBody);
+  }
+  void updateUi(dynamic weatherData){
+   double temp=weatherData['main']['temp'];
+   temprature=temp.toInt();
+   cityName=weatherData['name'];
+   condition=weatherData['weather'][0]['id'];
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +60,7 @@ class _LocationScreenState extends State<LocationScreen> {
             padding: EdgeInsets.only(left: 15),
             child: Row(
               children: [
-                Text('32',style: TextStyle(fontSize: 60,color: Colors.white),),
+                Text('$temprature °',style: TextStyle(fontSize: 60,color: Colors.white),),
                 Icon(Icons.sunny,size: 65,color: Colors.yellow,),
               ],
             ),
@@ -55,7 +70,7 @@ class _LocationScreenState extends State<LocationScreen> {
             child: Text.rich(
               TextSpan(
                   children: <InlineSpan>[
-              TextSpan(text: 'it\'s time in',style: TextStyle(color: Colors.white,fontSize: 60),),
+              TextSpan(text: 'it\'s time in', style: TextStyle(color: Colors.white,fontSize: 60),),
               WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child: Icon(Icons.icecream, color: Colors.white, size: 60,)),

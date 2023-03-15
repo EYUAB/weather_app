@@ -32,12 +32,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await locationTracer.getLocation();
     latitude= locationTracer.latitude;
     longitude=locationTracer.longitude;
-    String uri='https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey';
+    String uri='https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
     GetRequest getRe=GetRequest(uri);
    var weatherData=await getRe.getRequest();
    //var cityName= weatherData['name'];
   // print(cityName);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(),),);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(locationBody: weatherData,),),);
   }
   @override
   Widget build(BuildContext context) {
