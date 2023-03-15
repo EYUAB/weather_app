@@ -7,14 +7,18 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  Icon icecream=Icon(Icons.icecream,color: Colors.white,);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: Colors.black45,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.8), BlendMode.difference),
               image: AssetImage('images/pexels-photo-1118873.jpeg'),
             ),
           ),
@@ -41,12 +45,30 @@ class _LocationScreenState extends State<LocationScreen> {
             padding: EdgeInsets.only(left: 15),
             child: Row(
               children: [
-                Text('data'),
-                Text('data'),
+                Text('32',style: TextStyle(fontSize: 60,color: Colors.white),),
+                Icon(Icons.sunny,size: 65,color: Colors.yellow,),
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.only(right: 15), child: Text('data',textAlign: TextAlign.right,),),
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: Text.rich(
+              TextSpan(
+                  children: <InlineSpan>[
+              TextSpan(text: 'it\'s time in',style: TextStyle(color: Colors.white,fontSize: 60),),
+              WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: Icon(Icons.icecream, color: Colors.white, size: 60,)),
+              TextSpan(text: 'san fransisco',style: TextStyle(color: Colors.white,fontSize: 60),),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 40
+                ),
+          ),
+          ),
+         // Padding(padding: EdgeInsets.only(right: 15), child: Text('it\'s time in $icecream san fransisco',style: TextStyle(color: Colors.white,fontSize: 60), textAlign: TextAlign.right,),),
          ],
           ),),
         ),
