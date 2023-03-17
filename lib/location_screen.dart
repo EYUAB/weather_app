@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/city_screen.dart';
 import 'package:weather_app/weather.dart';
 class LocationScreen extends StatefulWidget {
   const LocationScreen({this.locationBody});
@@ -13,6 +14,7 @@ class _LocationScreenState extends State<LocationScreen> {
   late int temprature;
   late String cityName;
   late int condition; 
+  late String weatherIcon;
    @override
   void initState() {
     // TODO: implement initState
@@ -20,10 +22,19 @@ class _LocationScreenState extends State<LocationScreen> {
     updateUi(widget.locationBody);
   }
   void updateUi(dynamic weatherData){
-   double temp=weatherData['main']['temp'];
+    setState(() {
+      if(weatherData==null){
+        temprature=0;
+        cityName='';
+        weatherIcon='Eror';
+        return;
+      }
+    double temp=weatherData['main']['temp'];
    temprature=temp.toInt();
    cityName=weatherData['name'];
    condition=weatherData['weather'][0]['id'];
+   weatherIcon=weatherCondition.getWeatherIcon(condition);
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -49,10 +60,19 @@ class _LocationScreenState extends State<LocationScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(onTap: (){}, child: Container(
+                InkWell(onTap: ()async{
+                  updateUi( await weatherCondition.getLocationWeather());
+                }, 
+                child: Container(
                   child: Icon(Icons.near_me,size: 50,color: Colors.white,),
                 ),),
-                InkWell(onTap: (){}, child: Container(
+                InkWell(onTap: () async{
+                  var cityName= await Navigator.push(context, MaterialPageRoute(builder: (context)=>CityScreen()));
+                  if(cityName != null){
+                    var weatherCity= await weatherCondition.getCityWeather(cityName);
+                    updateUi(weatherCity);
+                  }
+                }, child: Container(
                   child: Icon(Icons.location_city,size: 50,color: Colors.white,),
                 ),),
               ],
@@ -62,12 +82,12 @@ class _LocationScreenState extends State<LocationScreen> {
             padding: EdgeInsets.only(left: 15),
             child: Row(
               children: [
-                Text('$temprature ° ${weatherCondition.getWeatherIcon(condition)}',style: TextStyle(fontSize: 60,color: Colors.white),),
+                Text('$temprature ° ${weatherIcon}',style: TextStyle(fontSize: 60,color: Colors.white),),
                
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.all(25),
+          Padding(padding: EdgeInsets.all(15),
           child: weatherCondition.getMessage(temprature,cityName),
           ),
           // Padding(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/getRequest.dart';
 import 'package:weather_app/location_screen.dart';
-import 'package:weather_app/location_tracer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:weather_app/weather.dart';
 late double latitude;
 late double longitude;
-const apiKey='6554778d30a128b3bda993f87cac3c86';
 void main(List<String> args) {
   runApp( const MaterialApp(
        debugShowCheckedModeBanner: false,
@@ -28,16 +26,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocationTraced();
   }
   void getLocationTraced() async{
-    LocationTracer locationTracer=LocationTracer();
-    await locationTracer.getLocation();
-    latitude= locationTracer.latitude;
-    longitude=locationTracer.longitude;
-    String uri='https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
-    GetRequest getRe=GetRequest(uri);
-   var weatherData=await getRe.getRequest();
+    WeatherCondition weather=WeatherCondition();
+   var weatherBody= await weather.getLocationWeather();
    //var cityName= weatherData['name'];
   // print(cityName);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(locationBody: weatherData,),),);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(locationBody: weatherBody,),),);
   }
   @override
   Widget build(BuildContext context) {
